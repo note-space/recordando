@@ -9,4 +9,4 @@ The download includes a small PHP "engine" for use on Windows; Macintosh has PHP
 <br />
 Because the world is always in search of a new calculator, this program introduces a calculator that works within a block of text.
 <br />
-![Screenshot](./note_space/screenshot.PNG)
+![Screenshot](./note_space/screenshot.png)
