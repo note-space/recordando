@@ -1,5 +1,5 @@
-## note_space
-A small PHP program to edit a collection of notes, and to organize those notes in the simplest possible way.
+## recordando
+recordando (Spanish for remembering) is a small PHP program to edit a collection of notes, and to organize those notes in the simplest  way.
 <br />
 It runs on any Windows, Macintosh or Linux computer, but not on any smartphone.
 <br />
