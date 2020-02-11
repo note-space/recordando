@@ -1,3 +1,0 @@
-these 3 files are only needed for Windows OS   
-
-you can delete them, if you want to ..
