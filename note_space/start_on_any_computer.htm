@@ -2,7 +2,7 @@
 <html><head>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >
 <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >
-<title>starting note_space</title>
+<title>starting recordando</title>
 <style type='text/css'>
 BODY { font-family: Tahoma, sans-serif; font-size: 9pt; line-height: 15pt; color: #000000; background-color: #CCCCCC }
 INPUT { font-family: Tahoma, sans-serif; font-size: 9pt; color: #333333; background-color: #DDDDDD; border: 1px solid #666666; -webkit-appearance: none }
@@ -17,12 +17,12 @@ function check_dir() {
 var path1 = window.location.pathname;  
 var path2 = path1.replace("/start_on_any_computer.htm",""); 
 var path3 = path2.replace(/^\/+/, "") ;
-var win1 = '"' + path3 + "/windows_engine/php_notes.exe" + '"' ;
-var win2 = " --server localhost:8000 --docroot " + '"' + path3 + '"' ;
+var win1 = '"' + path3 + "/windows_engine/php.exe" + '"' ;
+var win2 = " --server localhost:8040 --docroot " + '"' + path3 + '"' ;
 var win3 = " --define extension=" + '"' + path3 + "/windows_engine/php_pdo_sqlite.dll" + '"' ;
-document.getElementById('command0').value = "php --server localhost:8000 --docroot " + '"' + path2 + '"' ; 
-document.getElementById('command1').value = "php --server localhost:8000 --docroot " + '"' + path2 + '"' ; 
-document.getElementById('command2').value = "/usr/local/php5/bin/php --server localhost:8000 --docroot " + '"' + path2 + '"' ; 
+document.getElementById('command0').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
+document.getElementById('command1').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
+document.getElementById('command2').value = "/usr/local/php5/bin/php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
 document.getElementById('command3').value = win1 + win2 + win3 ; 
 if ( isIE() == 0 ) { document.getElementById('IEnote').className='hidden' ; } 
 }
@@ -75,7 +75,7 @@ for versions of OS X before 10.9, first install PHP 5.6 from php-osx.liip
 <a href='https://php-osx.liip.ch'>here</a> .. then use this command :<br>
 <input id='command2' size=100 >
 <br><br></div>
-<div id='note2' >on Windows, using the PHP engine downloaded from github/note-space/note_space :<br>
+<div id='note2' >on Windows, using the PHP engine downloaded from github/note-space/recordando :<br>
 copy the command below (to select all, click 3 times quickly)<br> 
 open the Command Prompt by typing window-R, and then typing "cmd" &amp; pressing enter<br>
 paste the command (use right-click, if needed) &amp; press enter again <br>
@@ -85,9 +85,9 @@ that's probably already on your computer. &nbsp; if not, you can download it fro
 <a href='https://www.microsoft.com/en-us/download/details.aspx?id=30679' >here</a><br>
 <br></div>
 <br>
-after PHP starts in Terminal, click on the link below to open note_space in your browser:
+after PHP starts in Terminal, click on the link below to open recordando in your browser:
 <br>
-<div class='curOS' >&nbsp; &nbsp; <a href='http://localhost:8000/app/box.php' ><b>my note_space</b></a></div>
+<div class='curOS' >&nbsp; &nbsp; <a href='http://localhost:8040/app/recordando.php' ><b>my recordando</b></a></div>
 <br><br>
 show instructions for &nbsp; <a href='javascript: void(0); showLinux();' >Linux</a> 
  &nbsp; <a href='javascript: void(0); showMac();' >Mac</a>
