@@ -1,6 +1,6 @@
-this_exe = "php_notes.exe"
+this_exe = "php.exe"
 this_port = "8040"
-this_program = "box_home.php"
+this_program = "recordando.php"
 prog_folder = "windows_engine"
 sub_folder = "app"
 
