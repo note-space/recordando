@@ -19,13 +19,15 @@ The PHP engine is just 3 files from php-5.4.45-Win32-VC9-x86.zip at https://wind
 <br />
 (The 5.4 version was chosen because its Visual C runtime requirement is compatiable with older PCs). 
 <br />
-There is a Visual Basic .vbs file for Windows that starts PHP with its built-in server option, and hides the terminal window.
+There is a Visual Basic .vbs file for Windows that starts PHP with its built-in server option, hides the terminal window, and opens the .php file in a browser window.
 <br />
-And, for any OS, there is an .htm file that displays a command the user can paste into a terminal window that they open for themselves.
+And, for any OS, there is an .htm file that displays a command for the user to paste into a terminal window that they open for themselves.  After that, they click on a link to open the .php file in the browser.
 <br />
 ![to start the program on any OS](./docs/screenshot3.png)
 <br />
 ![running in the Terminal window](./docs/screenshot4.png)
+<br />
+![the journal screen](./docs/screenshot5.png)
 <br />
 'recordando' in Spanish translates to 'remembering' in English
 <br />
