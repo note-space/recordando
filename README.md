@@ -31,3 +31,6 @@ And, for any OS, there is an .htm file that displays a command for the user to p
 <br />
 'recordando' in Spanish translates to 'remembering' in English
 <br />
+for questions or comments, you can contact the author at tomhyde2@gmail.com
+<br />
+
