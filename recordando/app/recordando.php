@@ -1,14 +1,12 @@
 <?php
 //  Project: recordando (https://github.com/note-space/recordando)
-//  Version: 2020-02-02 (last updated)
+//  Version: 2020-02-02 
 //  Summary: a program to organize and edit a collection of notes, with a journal and an in-text calculator
 //  Copyright (C) 2020, Thomas J Hyde .. residing in Wilmington DE US (tomhyde2@gmail.com)
 //  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 //  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-// put 6 color options in fields editable on program options screen ..
 
 recordando();
 
@@ -80,8 +78,6 @@ if ( $_POST['moves'] == 0 ):
  echo button('start_search','search') ."</div><br><br><br>" ; 
  echo button('set_moves(1)','start move','js') ."<br><br><br><br><br><br><br>" ; 
  array_menu($grid_num) ;
- // $js .= "document.oncontextmenu = function(evt) { " ;
- // $js .= "document.getElementById(\"new_menu\").style.display = \"block\"; document.oncontextmenu = null; return false; } " ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"none\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"block\" ; " ;
  echo "<br><br>". button($js,'hide menu','js') ."<br><br><br>" ; 
@@ -305,9 +301,6 @@ function change_to_portal(this_id) {
  document.getElementById('confirmPortal').value = this_id ; 
  document.getElementById('portalWarn').innerHTML = ' <- ". my_word('again to confirm: change card to portal') ."' ; } }
 " ;  
-// oncontextmenu event is used to trap right click .. null returns it to normal after first right click ..
-// document.oncontextmenu = function(evt) {
-// document.getElementById('new_menu').style.display = 'block'; document.oncontextmenu = null; return false; }
 if ( 'ajax' == $opt ): // only needed for the text edit screen
 echo "function ajax_save() {
  var xhttp = new XMLHttpRequest();  xhttp.onreadystatechange = function() {
@@ -468,11 +461,7 @@ $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $this_id ) ;
 $_POST['last_edit'] = $this_id ;
 page_header('ajax') ;
 echo "<div class='container' >" ;
-// echo "<div id='menu_button' >" ;
-// $js  = "document.getElementById(\"new_menu\").style.display = \"block\" ; " ;
-// $js .= "document.getElementById(\"menu_button\").style.display = \"none\" ; " ;
-// echo button($js,'menu','js') ."<br><br></div>" ;
-echo "<div id='new_menu' >" ; // style='display: none' 
+echo "<div id='new_menu' >" ; 
 note_menu($this_id,$opt,$date) ;
 echo "</div>" ;
 echo "<textarea id='this_text' name='this_text' >". input_str($row['this_text']) ;
@@ -488,18 +477,17 @@ endif;
 if ( isset($_POST['searching']) ): $back = button('save_and_search','close card') ; endif;
 echo $back . sp(5) ;
 echo button('save_note_and_calc','calc') . sp(5) ;
-echo sp(10) ;
 echo "<span id='more_button' >\n" ;
 $js  = "document.getElementById(\"more_button\").style.display = \"none\" ; " ;
 $js .= "document.getElementById(\"more_menu\").style.display = \"inline\" ; " ;
-echo button($js,'more','js') . sp(5) ;
+echo button($js,'more','js') ;
 echo "</span><span id='more_menu' style='display: none' >\n". sp(12) ;
 echo "<input type='hidden' id='confirmDelete' >\n" ;
 echo button("delete_one(". $this_id .",\"delete_note\")",'delete','js') ."<span id='deleteWarn' ></span>" . sp(5) ;
 echo button('print_note','print') . sp(5) ;
 if ( 'calendar' != $opt ): 
  echo button('change_to_portal('. $this_id .')','change to portal','js') ;
- echo "<span id='portalWarn' > </span><input type='hidden' id='confirmPortal' >\n". sp(5) ."card color: " ;
+ echo "<span id='portalWarn' > </span><input type='hidden' id='confirmPortal' >\n". sp(3) ."card color: " ;
  color_select($this_id) ;
 endif;
 echo "</span>\n<br><br>\n" ;
@@ -859,18 +847,12 @@ page_header() ;
 echo "<input type='hidden' id='this_date' name='this_date' >" ;
 echo "<input type='hidden' id='calendar_move' name='calendar_move' >" ;
 echo "<table style='margin-right:auto; margin-left:1px; margin-top: 9px' >" ;
-echo "<tr><td valign='top' align='center' ><div id='new_menu' >" ;  // style='display: none' 
+echo "<tr><td valign='top' align='center' ><div id='new_menu' >" ;  
 echo "<br>". button("set_grid(1)",'home','js') ."<br><br>" ;
-// echo my_word('up') ."<br>" ;
 echo button("scroll_up(9)",'-9','js') ."<br>". button("scroll_up(8)",'-8','js') ."<br>". button("scroll_up(4)",'-4','js') ."<br>" ;
 echo button("scroll_up(2)",'-2','js') ."<br>". button("scroll_up(1)",'-1','js') ."<br><br>" ;
-// echo "<br>". my_word('down') ."<br>" ;
 echo button("scroll_down(1)",'+1','js') ."<br>". button("scroll_down(2)",'+2','js') ."<br>" ;
 echo button("scroll_down(4)",'+4','js') ."<br>". button("scroll_down(6)",'+6','js') ."<br>". button("scroll_down(9)",'+9','js') ."<br>" ;
-//$js  = "document.getElementById(\"new_menu\").style.display = \"none\" ; " ;
-//$js .= "document.oncontextmenu = function(evt) { " ;
-//$js .= "document.getElementById(\"new_menu\").style.display = \"block\"; document.oncontextmenu = null; return false; } " ;
-//echo "<br>". button($js,'hide','js') ."<br><br>" ;
 $js  = "document.getElementById(\"menu_div\").style.display = \"block\"; " ;
 $js .= "document.getElementById(\"options_div\").style.display = \"none\"; " ;
 echo "<br><br><div id='options_div' >". button($js,'opts','js') ."</div>" ;
@@ -1079,8 +1061,7 @@ if ( $count == 1 And 'number' == $type ): run_sql("UPDATE t_this SET calc_commen
 return $err ;
 }
 
-function hasMatchedParentheses($str) {
-// credit to Nick Ohrn, stackoverflow.com/questions/562606/regex-for-checking-if-a-string-has-mismatched-parentheses
+function hasMatchedParentheses($str) {  // credit to Nick Ohrn, stackoverflow.com/questions/562606/regex-for-checking-if-a-string-has-mismatched-parentheses
 $counter = 0; $length = strlen($str);
 for( $i = 0; $i < $length; $i++ ):
  $char = $str[$i];
