@@ -15,9 +15,7 @@ ini_set('default_charset','UTF-8');
 date_default_timezone_set('America/New_York') ;
 ini_set('display_errors', 1);
 // the .db file has the same name as this .php file .. so, making additional collections is easy
-$file = str_replace('.php','.db',$_SERVER['PHP_SELF']) ;
-$file = str_replace('/app','',$file) ;
-$db_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . $file ;
+$db_file = str_replace('.php','.db',$_SERVER["SCRIPT_FILENAME"]) ;
 if ( !file_exists($db_file) ): die("the database file '". $db_file ."' is missing") ;  endif;
 $GLOBALS['db'] = new PDO('sqlite:'. $db_file ) ;
 $GLOBALS['db']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -118,9 +116,11 @@ echo "<br>". button('save_portal','save') ."<br><br>\n" ;
 echo "</div>" ;
 echo "<br><br>" ;  
 if ( $grid_num == 1 ):
- echo button('options_list_screen','program options') ."<br><br><div style='font-size: 8pt'>version 2020-02-02" ; 
- echo "<br>PHP v. ". phpversion() ;
- echo "<br>for support, email :<br>tomhyde2@gmail.com<br></div>" ;
+ echo button('options_list_screen','program options') ."<br><br>" ;
+ echo "<div style='font-size: 8pt'>program v. 2020-02-02" ; 
+ echo "<br>PHP v. ". phpversion() ."<br>.db file:<br>" ;
+ echo str_replace('.php','.db',$_SERVER["SCRIPT_FILENAME"]) ;
+ echo "<br><br>for support, email :<br>tomhyde2@gmail.com<br></div>" ;
 endif;
 }
 
@@ -722,7 +722,7 @@ echo preg_replace( '/\r\n|\r|\n/', '<br>', $row['this_text'] ) ;  // do not stri
 }
 
 function show_code() { 
-$file = dirname(__FILE__) . str_replace('/app','',$_SERVER['PHP_SELF']) ;
+$file = $_SERVER["SCRIPT_FILENAME"] ;
 $line_nums = implode(range(1, count(file($file))), '<br>'); 
 $php_code = highlight_file($file, true); 
 echo '<style type="text/css">  .num { float: left; color: gray; font-size: 13px; font-family: monospace;
