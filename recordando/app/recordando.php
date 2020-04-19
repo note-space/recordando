@@ -1,6 +1,6 @@
 <?php
 //  Project: recordando (https://github.com/note-space/recordando)
-//  Version: 2020-02-02 
+//  Version: 2020-02-02
 //  Summary: a program to organize and edit a collection of notes, with a journal and an in-text calculator
 //  Copyright (C) 2020, Thomas J Hyde .. residing in Wilmington DE US (tomhyde2@gmail.com)
 //  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
@@ -34,15 +34,15 @@ if ( trim($_POST['one']) != trim(get_note_opt(0,'pw')) ): enter_pw('pw not a mat
 function enter_pw($mess) {
 echo "<html><head><title>hola</title></head><body><form action='". $_SERVER['PHP_SELF'] ."' method='POST' >" ;
 echo "<br><textarea cols=10 rows=1 name='one' ></textarea><br><br>" ;
-echo "<input type='submit' value='enter' ><br><br>". $mess ."</form></body></html>" ;  
+echo "<input type='submit' value='enter' ><br><br>". $mess ."</form></body></html>" ;
 die() ;
 }
 
 function grid_screen() {
-page_header() ;  
+page_header() ;
 $grid_num = 1 ;
 if ( isset($_POST['grid_num']) ): $grid_num = $_POST['grid_num'] ; endif;
-echo "<table style='margin-right:auto; margin-left:12px; margin-top:12px' >\n" ; 
+echo "<table style='margin-right:auto; margin-left:12px; margin-top:12px' >\n" ;
 $subgrid_cols = get_note_opt($grid_num,'subgrid_cols') ;
 if ( intval($subgrid_cols) < 1 ): $subgrid_cols = 3 ; endif;
 for ( $this_col=1; $this_col<=$subgrid_cols; $this_col++ ):
@@ -53,35 +53,40 @@ endfor;
 $records = num_rows("t_note WHERE parent_grid = ". $grid_num) ;
 if ( $records == 0 ): echo "<td>this array is empty, for now</td>" ; endif;
 echo "<td valign='top' >" ;
-echo "<div id='menu_button' >" ;
+$row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num) ;
+if ( $_POST['moves'] == 0 ):
+ echo "<div id='menu_button' >" ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"block\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"none\" ; " ;
  echo button($js,'menu','js') ."</div>" ;
-$row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num) ;
-if ( $_POST['moves'] == 0 ):
  echo "<div id='new_menu' style='display: none' >" ;
- if ( $grid_num > 1 ): 
+ if ( $grid_num > 1 ):
   echo button('set_grid('. $row['parent_grid'] .')','go up','js') ;
  else:
   echo "(top)" ;
  endif;
- echo"<br><br>" ; 
+ echo"<br><br>" ;
  $js = "document.getElementById(\"this_putdown\").value = ". $this_col ." ; set_process(\"stack_add\") ; " ;
  echo button($js,'add card','js') ."<br><br><br>" ;
  echo button('journal_screen','open journal') ."<br><br><br>" ;
  $js  = "document.getElementById(\"search_div\").style.display = \"block\"; " ;
- $js .= "document.getElementById(\"start_search\").style.display = \"none\"; " ; 
- echo "<span id='start_search' >". button($js,'open search','js') ."</span>" ; 
- echo "<div id='search_div' style='display: none ' ><input type='text' name='search_str' size=20 value='". get_note_opt(0,'search') ."' ><br>" ;
- echo button('start_search','search') ."</div><br><br><br>" ; 
- echo button('set_moves(1)','start move','js') ."<br><br><br><br><br><br><br>" ; 
+ $js .= "document.getElementById(\"start_search\").style.display = \"none\"; " ;
+ echo "<span id='start_search' >". button($js,'open search','js') ."</span>" ;
+ echo "<div id='search_div' style='display: none' ><input type='text' name='search_str' size=20 value='". get_note_opt(0,'search') ."' ><br>";
+ echo button('start_search','search') ."</div><br><br><br>" ;
+ echo button('set_moves(1)','start move','js') ."<br><br><br><br><br><br><br>" ;
  array_menu($grid_num) ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"none\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"block\" ; " ;
- echo "<br><br>". button($js,'hide menu','js') ."<br><br><br>" ; 
+ echo "<br><br>". button($js,'hide menu','js') ."<br><br><br>" ;
  echo "</div>" ;
 else:
- echo "<br>click on a<br>card to start<br><br>&nbsp;". button('set_moves(0)','stop moving','js') ;  
+ if ( $grid_num > 1 ):
+  echo button('set_grid('. $row['parent_grid'] .')','go up','js') ;
+ else:
+  echo "(top)" ;
+ endif;
+ echo "<br><br>click on a<br>card to start<br><br>&nbsp;". button('set_moves(0)','stop moving','js') ;
  echo "<br><br>a yellow border indicates <br>the card has been selected to be moved<br>" ;
  echo "<br>after you select a card,<br>click on one of the 'here' buttons,<br>to move the card to that spot" ;
 endif;
@@ -92,14 +97,14 @@ echo "</table></form></body></html>" ;
 function array_menu($grid_num) {
 $js  = "document.getElementById(\"portal_div\").style.display = \"block\"; " ;
 $js .= "document.getElementById(\"button_div\").style.display = \"none\"; " ;
-echo "<div id='button_div' >". button($js,'portal options','js') ."</div>\n" ;  
+echo "<div id='button_div' >". button($js,'portal options','js') ."</div>\n" ;
 echo "<div id='portal_div' style='display: none; text-align: left; background-color: #EEEEEE' ><br>\n" ;
 $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num ) ;
 echo "<br><input type='hidden' name='portal_id' value=". $grid_num ." >\n" ;
 echo my_word('portal title') .":<br><input type='text' name='this_text' size=16 value='". $row['this_text'] ."' ><br>" ;
 $count = num_rows("t_note WHERE parent_grid = ". $grid_num ) ;
 if ( $count < 1 ):
- $str  = button('change_to_card','change') ." back to a card<br>\n" ; 
+ $str  = button('change_to_card','change') ." back to a card<br>\n" ;
  $str .= "<input type='hidden' id='confirmDelete' >\n" ;
  $str .= button("delete_one(". $grid_num .",\"delete_portal\")",'delete','js') ."<span id='deleteWarn' ></span><br><br>\n" ;
 else:
@@ -114,10 +119,10 @@ echo my_word('portal color') .":<br>\n" ;
 color_select($grid_num) ;
 echo "<br>". button('save_portal','save') ."<br><br>\n" ;
 echo "</div>" ;
-echo "<br><br>" ;  
+echo "<br><br>" ;
 if ( $grid_num == 1 ):
  echo button('options_list_screen','program options') ."<br><br>" ;
- echo "<div style='font-size: 8pt'>program v. 2020-02-02" ; 
+ echo "<div style='font-size: 8pt'>program v. 2020-02-02" ;
  echo "<br>PHP v. ". phpversion() ."<br>.db file:<br>" ;
  echo str_replace('.php','.db',$_SERVER["SCRIPT_FILENAME"]) ;
  echo "<br><br>for support, email :<br>tomhyde2@gmail.com<br></div>" ;
@@ -126,7 +131,7 @@ endif;
 
 function save_portal() {
 $sql = "UPDATE t_note SET this_text = ? WHERE this_id = ". $_POST['grid_num'] ;
-$arr = array() ;  $arr[] = db_str($_POST['this_text']) ; 
+$arr = array() ;  $arr[] = db_str($_POST['this_text']) ;
 run_sql($sql,$arr) ;
 $subgrid_cols = intval($_POST['subgrid_cols']) ;
 if ( $subgrid_cols < 1 ): $subgrid_cols = 3 ; endif;
@@ -136,7 +141,7 @@ grid_screen() ;
 }
 
 function one_col_stack($grid_num,$this_col) {
-$count = 0 ; $next = 1 ;  // for the last move block 
+$count = 0 ; $next = 1 ;  // for the last move block
 $sqlA = "SELECT * FROM t_note WHERE parent_grid = ". $grid_num ." AND " ;
 $result = select_sql($sqlA ."card_status = 0 AND this_col = ". $this_col ." ORDER BY this_row") ;
 while ( $row = $result->fetch() ):
@@ -160,9 +165,9 @@ while ( $row = $result->fetch() ):
  if ( $_POST['moves'] == 1 ):
   $str = $next++ .'|'. $this_col .'|1' ;  // 1 = in-active
   stack_gap($this_col,$str,'') ;
- endif;  
+ endif;
  echo "<tr>" ;
- note_cell($row,'inactive') ; 
+ note_cell($row,'inactive') ;
  echo "</tr>" ;
  $count++ ;
 endwhile;
@@ -175,9 +180,9 @@ if ( $_POST['moves'] == 1 ): // spot at bottom of in-active cards
 endif;
 }
 
-function note_cell($row,$opt='') { 
+function note_cell($row,$opt='') {
 $border = "border-style: solid ; border-width: 1px ; border-color: #999999 " ;
-$color = get_note_opt($row['this_id'],'card_color') ; 
+$color = get_note_opt($row['this_id'],'card_color') ;
 if ( strlen($color) < 2 ): $color = '#CCCCCC' ; endif;
 if ( 'inactive' == $opt ): $color = "#DDDDDD ; color: #555555; " ; endif; // grey type for inactive cells
 $highlight = set_highlight($row) ;
@@ -194,10 +199,10 @@ echo str_replace("\n", "<br>", $str) ."</div></div></td>\n" ;
 function my_word($word) { return $word ; }  // this could allow for other languages, later
 
 function page_header($ajax='') {
-echo "<!DOCTYPE PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' >\n" ;   
+echo "<!DOCTYPE PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' >\n" ;
 echo "<html><head>\n<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >\n" ;
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >\n" ;
-$title = 'recordando' ;  
+$title = 'recordando' ;
 if ( isset($_POST['grid_num']) ):
  $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $_POST['grid_num']) ;
  if ( strlen($row['this_text']) > 1 ): $title = strip_tags($row['this_text']) ; endif;
@@ -210,13 +215,13 @@ echo_hidden() ;
 }
 
 function echo_css() {
-$cell_height = get_note_opt(0,'list_card_height') ; 
-$cell_width = get_note_opt(0,'list_card_width') ;  
-$color = get_note_opt(0,'text_color') ; 
+$cell_height = get_note_opt(0,'list_card_height') ;
+$cell_width = get_note_opt(0,'list_card_width') ;
+$color = get_note_opt(0,'text_color') ;
 $back = get_note_opt(0,'background_color') ;
 $pt = intval(get_note_opt(0,'text_font_size')) ;  if ( $pt < 8 ): $pt = 8 ; endif;
 $lead = $pt + 2 ;
-$base = "font-family: ". get_note_opt(0,'text_font') .", sans-serif; font-size: ". $pt ."pt; line-height: ". $lead ."pt; " ; 
+$base = "font-family: ". get_note_opt(0,'text_font') .", sans-serif; font-size: ". $pt ."pt; line-height: ". $lead ."pt; " ;
 $text  = "font-family: ". get_note_opt(0,'textarea_font') .", monospace; " ;
 $text .= "font-size: ". get_note_opt(0,'textarea_font_size') ."pt; " ;
 $text .= "color: ". get_note_opt(0,'textarea_text_color') ."; background-color: ". get_note_opt(0,'textarea_back_color') ."; " ;
@@ -285,22 +290,22 @@ function set_grid(this_id) {
  document.getElementById('last_edit').value = document.getElementById('grid_num').value ;
  document.getElementById('grid_num').value = this_id ; document.getElementById('pCode').value = 'grid_screen' ; document.formA.submit(); }
 function calendar_day(this_date) {
- document.getElementById('this_date').value = this_date ; document.getElementById('pCode').value = 'open_calendar_cell' ; document.formA.submit(); } 
+ document.getElementById('this_date').value = this_date ; document.getElementById('pCode').value = 'open_calendar_cell' ; document.formA.submit(); }
 function scroll_up(this_many) {
  document.getElementById('calendar_move').value = this_many ; document.getElementById('pCode').value = 'move_calendar_up' ; document.formA.submit(); }
 function scroll_down(this_many) {
- document.getElementById('calendar_move').value = this_many ; document.getElementById('pCode').value = 'move_calendar_down' ; document.formA.submit(); }   
+ document.getElementById('calendar_move').value = this_many ; document.getElementById('pCode').value = 'move_calendar_down' ; document.formA.submit(); }
 function delete_one(this_id,this_funct) {
  if ( document.getElementById('confirmDelete').value == this_id ) {
  document.getElementById('pCode').value = this_funct ; document.formA.submit(); } else {
- document.getElementById('confirmDelete').value = this_id ; 
+ document.getElementById('confirmDelete').value = this_id ;
  document.getElementById('deleteWarn').innerHTML = ' <- ". my_word('again to confirm delete') ."' ; } }
 function change_to_portal(this_id) {
  if ( document.getElementById('confirmPortal').value == this_id ) {
  document.getElementById('pCode').value = 'change_to_portal' ; document.formA.submit(); } else {
- document.getElementById('confirmPortal').value = this_id ; 
+ document.getElementById('confirmPortal').value = this_id ;
  document.getElementById('portalWarn').innerHTML = ' <- ". my_word('again to confirm: change card to portal') ."' ; } }
-" ;  
+" ;
 if ( 'ajax' == $opt ): // only needed for the text edit screen
 echo "function ajax_save() {
  var xhttp = new XMLHttpRequest();  xhttp.onreadystatechange = function() {
@@ -310,19 +315,19 @@ echo "function ajax_save() {
  var str0 = '&txt=' + encodeURIComponent(document.getElementById('this_text').value) ;
  var str1 = 'pCode=ajax_save&id=' + document.getElementById('this_id').value + str0 ; xhttp.send(str1); }
 setInterval(ajax_save, 15000) ;\n" ; // saving text every 15 seconds ..
-endif;  
+endif;
 echo "</script>\n" ;
 }
 
-function delete_note() { 
+function delete_note() {
 run_sql("DELETE FROM t_note WHERE this_id = ". intval($_POST['this_id'])) ;
 grid_screen() ;
 }
 
-function delete_portal() { 
+function delete_portal() {
 $id = intval($_POST['grid_num']) ;
 $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $id) ;
-$_POST['grid_num'] = $row['parent_grid'] ; 
+$_POST['grid_num'] = $row['parent_grid'] ;
 run_sql("DELETE FROM t_note WHERE this_id = ". $id) ;
 grid_screen() ;
 }
@@ -340,7 +345,7 @@ $now = new DateTime() ;
 $sql  = "UPDATE t_note SET this_text = ?, datetime_edited = '". $now->format('Y-m-d H:i:s') ."' " ;
 $sql .= "WHERE this_id = ". intval($_POST['this_id']) ;
 $arr = array() ;
-$arr[] = db_str($_POST['this_text']) ; 
+$arr[] = db_str($_POST['this_text']) ;
 run_sql($sql,$arr) ;
 save_color($_POST['this_id']) ;
 }
@@ -360,7 +365,7 @@ endif;
 function change_to_portal() {
 save_note() ;
 set_note_opt($_POST['this_id'],'has_subgrid',1) ;
-set_note_opt($_POST['this_id'],'subgrid_cols',4) ; 
+set_note_opt($_POST['this_id'],'subgrid_cols',4) ;
 grid_screen() ;
 }
 
@@ -407,16 +412,16 @@ echo "<div style='padding: 24px'>" ;
 echo "<br>". button('save_options','save') ."<br><br><div id='menu2' >\n" ;
 one_option_input('list_card_width',4) ; echo "<br>" ;
 one_option_input('list_card_height',4) ; echo "<br><br>" ;
-one_option_input('pw',12) ; 
+one_option_input('pw',12) ;
 echo "&nbsp; &nbsp; ". my_word('skip password ') ;
 $arr = array('no','yes');
 select_input('skip_pw',$arr) ;
 echo "</div>" ;
-font_menu() ;  
+font_menu() ;
 echo "<br><br><br>number format: " ;
 $arr = array('anglo','euro');
 select_input('number_format',$arr) ;
-echo "<br><br><br>" ; 
+echo "<br><br><br>" ;
 echo button('show_code','show PHP code') ;
 echo "</div></form></body></html>" ;
 }
@@ -450,7 +455,7 @@ if ( isset($_POST['list_card_width']) ): set_note_opt(0,'list_card_width',$_POST
 if ( isset($_POST['pw']) ): set_note_opt(0,'pw',$_POST['pw']) ; endif;
 if ( isset($_POST['skip_pw']) ): set_note_opt(0,'skip_pw',$_POST['skip_pw']) ; endif;
 if ( isset($_POST['number_format']) ): set_note_opt(0,'number_format',$_POST['number_format']) ; endif;
-grid_screen() ;	
+grid_screen() ;
 }
 
 function open_edit() { edit_note('') ; }
@@ -461,18 +466,20 @@ $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $this_id ) ;
 $_POST['last_edit'] = $this_id ;
 page_header('ajax') ;
 echo "<div class='container' >" ;
-echo "<div id='new_menu' >" ; 
+echo "<div id='new_menu' >" ;
 note_menu($this_id,$opt,$date) ;
 echo "</div>" ;
-echo "<textarea id='this_text' name='this_text' >". input_str($row['this_text']) ;
-echo "</textarea><br><span id='ajax_mess'></span></div></form></body></html>" ;
+echo "<textarea id='this_text' name='this_text' >". input_str($row['this_text']) ."</textarea><br>" ;
+$row1 = select_one_row("SELECT * FROM t_note WHERE this_id = ". $row['parent_grid'] ) ;
+echo "parent: ". substr($row1['this_text'],0,16) ;
+echo " <span id='ajax_mess'></span></div></form></body></html>" ;
 }
 
 function note_menu($this_id,$opt='',$date='') {
-$back = button('save_note_and_close','close card') ; 
-if ( 'calendar' == $opt ): 
+$back = button('save_note_and_close','close card') ;
+if ( 'calendar' == $opt ):
  echo "<b>". $date ."</b>". sp(5) ;
- $back = button('save_note_and_calendar','close day') ; 
+ $back = button('save_note_and_calendar','close day') ;
 endif;
 if ( isset($_POST['searching']) ): $back = button('save_and_search','close card') ; endif;
 echo $back . sp(5) ;
@@ -485,7 +492,7 @@ echo "</span><span id='more_menu' style='display: none' >\n". sp(12) ;
 echo "<input type='hidden' id='confirmDelete' >\n" ;
 echo button("delete_one(". $this_id .",\"delete_note\")",'delete','js') ."<span id='deleteWarn' ></span>" . sp(5) ;
 echo button('print_note','print') . sp(5) ;
-if ( 'calendar' != $opt ): 
+if ( 'calendar' != $opt ):
  echo button('change_to_portal('. $this_id .')','change to portal','js') ;
  echo "<span id='portalWarn' > </span><input type='hidden' id='confirmPortal' >\n". sp(3) ."card color: " ;
  color_select($this_id) ;
@@ -494,13 +501,13 @@ echo "</span>\n<br><br>\n" ;
 }
 
 function color_select($this_id) {
-$this_color = get_note_opt($this_id,'card_color') ; 
-$arr = array() ; $arr[] = 'lightgray' ;  $arr[] = 'lightsalmon' ;  $arr[] = 'lavender' ;  
+$this_color = get_note_opt($this_id,'card_color') ;
+$arr = array() ; $arr[] = 'lightgray' ;  $arr[] = 'lightsalmon' ;  $arr[] = 'lavender' ;
 $arr[] = 'lightyellow' ;  $arr[] = 'paleturquoise' ; $arr[] = 'palegreen' ;  $arr[] = 'ivory' ;
 echo "<select name='color_select' >\n" ;;
 foreach ( $arr as $color ):
  echo "<option style='background-color: ". $color ."' " ;
- if ( $color == $this_color ): echo "selected " ; endif;  
+ if ( $color == $this_color ): echo "selected " ; endif;
  echo " value='". $color ."' >". $color ."</option>\n" ;
 endforeach;
 echo "</select>\n" ;
@@ -556,7 +563,7 @@ endfor;
 }
 
 function stack_add() {
-$this_col = 1 ; // always col 1 , for now 
+$this_col = 1 ; // always col 1 , for now
 $new_row_num = 2 ;
 // re-order the column, new note at top, others pushed down
 $sql  = "SELECT * FROM t_note WHERE parent_grid = ". $_POST['grid_num'] ." AND this_col = ". $this_col ;
@@ -577,7 +584,7 @@ $_POST['this_id'] = $latest['latest'] ;
 edit_note() ;
 }
 
-function button($process,$label,$opt='') {	
+function button($process,$label,$opt='') {
 if ( '' == $opt ): $js = "set_process(\"". $process ."\")" ; else: $js = $process ; endif;
 return "<input type='button' class='buttony' onclick='". $js ."' value='" . $label ."' >" ;
 }
@@ -592,12 +599,12 @@ if ( $txt != $row['this_text'] ):
  $sql = "UPDATE t_note SET this_text = ? , datetime_edited = '". $now->format('Y-m-d H:i:s') ."' WHERE this_id = ". intval($_POST['id']) ;
  $arr = array() ;  $arr[] = db_str($txt) ;
  run_sql($sql,$arr) ;
- echo strlen($txt) .' chars saved, '. $now->format('Y-m-d H:i:s') ;  
+ echo strlen($txt) .' chars saved, '. $now->format('Y-m-d H:i:s') ;
 endif;
 }
 
-function input_str($str) { return htmlspecialchars($str, ENT_QUOTES, 'UTF-8') ; } // going into HTML 
-function db_str($str) { return htmlspecialchars_decode($str, ENT_QUOTES) ; }  // going to database 
+function input_str($str) { return htmlspecialchars($str, ENT_QUOTES, 'UTF-8') ; } // going into HTML
+function db_str($str) { return htmlspecialchars_decode($str, ENT_QUOTES) ; }  // going to database
 
 function select_sql($sql) {
 try { $result = $GLOBALS['db']->query($sql) ; }
@@ -622,7 +629,7 @@ function num_rows($where) {
 return $GLOBALS['db']->query("SELECT COUNT(*) FROM ". $where)->fetchColumn() ;
 }
 
-function get_note_opt($note_id,$this_opt) {  
+function get_note_opt($note_id,$this_opt) {
 $str = '' ;
 $count = num_rows("t_note_opt WHERE note_id = ". $note_id ." AND this_opt = '". $this_opt ."'" ) ;
 if ( $count > 0 ):
@@ -632,12 +639,12 @@ else:
  if ( $note_id == 0 ):
   $str = lookup_default($this_opt) ;
   run_sql("INSERT INTO t_note_opt ( note_id, this_opt, this_value ) VALUES (". $note_id .", '". $this_opt ."', '". $str ."' )" ) ;
- endif;	
+ endif;
 endif;
 return $str ;
 }
 
-function set_note_opt($note_id,$this_opt,$this_value) { 
+function set_note_opt($note_id,$this_opt,$this_value) {
 $count = num_rows("t_note_opt WHERE note_id = ". $note_id ." AND this_opt = '". $this_opt ."'" ) ;
 if ( $count < 1 ):
  run_sql("INSERT INTO t_note_opt ( note_id, this_opt ) VALUES (". $note_id .", '". $this_opt ."' )" ) ;
@@ -651,11 +658,11 @@ run_sql($sql,$arr) ;
 function lookup_default($opt) {
 $str = '' ;
 switch( $opt ):
- case 'textarea_font' : $str = 'monospace' ; break;  
+ case 'textarea_font' : $str = 'monospace' ; break;
  case 'text_font' : $str = 'sans-serif' ; break;
  case 'text_font_size' : $str = '10' ; break;
- case 'text_color' : $str = 'black' ; break; 
- case 'background_color' : $str = 'Thistle' ; break; 
+ case 'text_color' : $str = 'black' ; break;
+ case 'background_color' : $str = 'Thistle' ; break;
  case 'button_font' : $str = 'sans-serif' ; break;
  case 'textarea_text_color' : $str = 'PaleGoldenrod' ; break;
  case 'textarea_back_color' : $str = 'DarkSlateGray' ; break;
@@ -664,15 +671,15 @@ switch( $opt ):
  case 'list_card_height' : $str = '130' ; break;
  case 'list_card_width' : $str = '190' ; break;
  case 'pw' : $str = '4321' ; break;
- case 'skip_pw' : $str = 'yes' ; break; 
- case 'calendar_num_weeks' : $str = '6' ; break; 
- case 'calendar_first_weekday' : $str = '0' ; break; 
- case 'calendar_top_date' : $str = '2020-02-02' ; break; 
- case 'calendar_lines' : $str = '2' ; break; 
- case 'calendar_chars' : $str = '16' ; break; 
- case 'calendar_move' : $str = '2' ; break;   
- case 'day_before_month' : $str = 'no' ; break;   
-endswitch;  
+ case 'skip_pw' : $str = 'yes' ; break;
+ case 'calendar_num_weeks' : $str = '6' ; break;
+ case 'calendar_first_weekday' : $str = '0' ; break;
+ case 'calendar_top_date' : $str = '2020-02-02' ; break;
+ case 'calendar_lines' : $str = '2' ; break;
+ case 'calendar_chars' : $str = '16' ; break;
+ case 'calendar_move' : $str = '2' ; break;
+ case 'day_before_month' : $str = 'no' ; break;
+endswitch;
 return $str ;
 }
 
@@ -682,12 +689,12 @@ search_screen() ;
 }
 
 function search_screen() {
-page_header() ;  
+page_header() ;
 $search_str = get_note_opt(0,'search') ;
 echo "<input type='hidden' name='searching' value='on' >" ;
 $grid_num = 1 ;
 if ( isset($_POST['grid_num']) ): $grid_num = $_POST['grid_num'] ; endif;
-echo "<table style='margin-right:auto; margin-left:6px' >\n" ; 
+echo "<table style='margin-right:auto; margin-left:6px' >\n" ;
 echo "<td valign='top' ><table>" ;
 $match = array() ;
 $result = select_sql("SELECT * FROM t_note") ; // go through all records ..
@@ -707,29 +714,29 @@ echo button('start_search','search') ."<br><br></td>\n" ;
 echo "</table></form></body></html>" ;
 }
 
-function print_note() { 
-save_note() ; 
+function print_note() {
+save_note() ;
 $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $_POST['this_id'] ) ;
 echo "<html><title>". substr(strip_tags($row['this_text']),0,20) ."</title>\n" ;
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >\n" ;
 echo "<style type='text/css'>\n" ;
-echo "BODY { font-family: Tahoma, sans-serif; font-size: 100%; color: #000000; background-color: #FFFFFF } 
+echo "BODY { font-family: Tahoma, sans-serif; font-size: 100%; color: #000000; background-color: #FFFFFF }
 TABLE { font-family: Tahoma, sans-serif; font-size: 100%; color: #000000; background-color: #FFFFFF }
-@media print { div#top_buttons { display: none} }\n" ; 
+@media print { div#top_buttons { display: none} }\n" ;
 echo "</style></head><body><div id='top_buttons' >". sp(12) . button('history.back()','back','js');
 echo sp(12) . button('window.print()','print','js') ."<br><br></div>" ;
 echo preg_replace( '/\r\n|\r|\n/', '<br>', $row['this_text'] ) ;  // do not strip tags here ..
 }
 
-function show_code() { 
+function show_code() {
 $file = $_SERVER["SCRIPT_FILENAME"] ;
-$line_nums = implode(range(1, count(file($file))), '<br>'); 
-$php_code = highlight_file($file, true); 
+$line_nums = implode(range(1, count(file($file))), '<br>');
+$php_code = highlight_file($file, true);
 echo '<style type="text/css">  .num { float: left; color: gray; font-size: 13px; font-family: monospace;
- text-align: right; margin-right: 6pt; padding-right: 6pt; border-right: 1px solid gray;} 
- body { margin: 0px; margin-left: 5px; } td { vertical-align: top; } code { white-space: nowrap; } </style>' ; 
-echo "<table><tr><td class='num'>". $line_nums ."</td><td>". $php_code ."</td></tr></table>"; 
-} 
+ text-align: right; margin-right: 6pt; padding-right: 6pt; border-right: 1px solid gray;}
+ body { margin: 0px; margin-left: 5px; } td { vertical-align: top; } code { white-space: nowrap; } </style>' ;
+echo "<table><tr><td class='num'>". $line_nums ."</td><td>". $php_code ."</td></tr></table>";
+}
 
 function select_input($name,$arr,$id=0) {
 $pick = get_note_opt($id,$name) ;
@@ -847,9 +854,9 @@ page_header() ;
 echo "<input type='hidden' id='this_date' name='this_date' >" ;
 echo "<input type='hidden' id='calendar_move' name='calendar_move' >" ;
 echo "<table style='margin-right:auto; margin-left:1px; margin-top: 9px' >" ;
-echo "<tr><td valign='top' align='center' ><div id='new_menu' >" ;  
+echo "<tr><td valign='top' align='center' ><div id='new_menu' >" ;
 echo "<br>". button("set_grid(1)",'home','js') ."<br><br>" ;
-echo button("scroll_up(9)",'-9','js') ."<br>". button("scroll_up(8)",'-8','js') ."<br>". button("scroll_up(4)",'-4','js') ."<br>" ;
+echo button("scroll_up(9)",'-9','js') ."<br>". button("scroll_up(6)",'-6','js') ."<br>". button("scroll_up(4)",'-4','js') ."<br>" ;
 echo button("scroll_up(2)",'-2','js') ."<br>". button("scroll_up(1)",'-1','js') ."<br><br>" ;
 echo button("scroll_down(1)",'+1','js') ."<br>". button("scroll_down(2)",'+2','js') ."<br>" ;
 echo button("scroll_down(4)",'+4','js') ."<br>". button("scroll_down(6)",'+6','js') ."<br>". button("scroll_down(9)",'+9','js') ."<br>" ;
