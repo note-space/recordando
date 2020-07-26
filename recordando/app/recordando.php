@@ -55,26 +55,23 @@ if ( $records == 0 ): echo "<td>this array is empty, for now</td>" ; endif;
 echo "<td valign='top' >" ;
 $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num) ;
 if ( $_POST['moves'] == 0 ):
+ if ( $grid_num > 1 ): echo button('set_grid('. $row['parent_grid'] .')','go up','js') ."<br><br><br>" ; endif;
+ if ( $grid_num == 1 ): echo "(top)<br><br><br>" ;  endif;
  echo "<div id='menu_button' >" ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"block\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"none\" ; " ;
  echo button($js,'menu','js') ."</div>" ;
  echo "<div id='new_menu' style='display: none' >" ;
- if ( $grid_num > 1 ):
-  echo button('set_grid('. $row['parent_grid'] .')','go up','js') ;
- else:
-  echo "(top)" ;
- endif;
- echo"<br><br>" ;
  $js = "document.getElementById(\"this_putdown\").value = ". $this_col ." ; set_process(\"stack_add\") ; " ;
  echo button($js,'add card','js') ."<br><br><br>" ;
- echo button('journal_screen','open journal') ."<br><br><br>" ;
  $js  = "document.getElementById(\"search_div\").style.display = \"block\"; " ;
  $js .= "document.getElementById(\"start_search\").style.display = \"none\"; " ;
  echo "<span id='start_search' >". button($js,'open search','js') ."</span>" ;
  echo "<div id='search_div' style='display: none' ><input type='text' name='search_str' size=20 value='". get_note_opt(0,'search') ."' ><br>";
  echo button('start_search','search') ."</div><br><br><br>" ;
- echo button('set_moves(1)','start move','js') ."<br><br><br><br><br><br><br>" ;
+ echo button('set_moves(1)','start move','js') ."<br><br><br>" ;
+ echo button('journal_screen','open journal') ."<br><br><br>" ;
+ echo "<br><br><br><br>" ;
  array_menu($grid_num) ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"none\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"block\" ; " ;
@@ -202,12 +199,7 @@ function page_header($ajax='') {
 echo "<!DOCTYPE PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' >\n" ;
 echo "<html><head>\n<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >\n" ;
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >\n" ;
-$title = 'recordando' ;
-if ( isset($_POST['grid_num']) ):
- $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $_POST['grid_num']) ;
- if ( strlen($row['this_text']) > 1 ): $title = strip_tags($row['this_text']) ; endif;
-endif;
-echo "<title>". $title ."</title>\n" ;
+echo "<title>recordando</title>\n" ;
 echo_css() ;
 echo_javascript($ajax) ;
 echo "</head><body><form action='". $_SERVER['PHP_SELF'] ."' method='POST' name='formA' onsubmit='return false' >\n" ;
