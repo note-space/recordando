@@ -13,19 +13,18 @@ It does have one more feature .. a calculating function that works within a bloc
 <br />
 It is designed to run as a desktop application installed locally on any Windows, Macintosh or Linux personal computer or laptop, but not on any smartphone or tablet type system.
 <br />
-There is a html page, "start_on_any_computer.htm", that displays a command for you to copy & paste into a terminal window that you open for yourself.
+There is a html page, "start_on_any_computer.htm", that displays text for a command for you to copy & paste into a terminal window that you open for yourself.
 <br />
-That's an extra step that most people will consider to be too much effort .. but, it does mean that there is not a hidden process running.
+Most people will consider that to be too much effort .. but, it does mean that there is not a hidden process running.
 <br />
-<br />
-After that, you click on the "my recordando" link to open the .php file in the browser.
+After that, you click on the "my recordando" link to see the results of the .php file.
 <br />
 ![to start the program on any OS](./docs/screenshot3.png)
 <br />
 The notes are saved in a sqlite file on the local computer; nothing is on the internet .. though you could place the program in some sort of file-sharing system.
 <br />
 <br />
-The download includes a small PHP "engine" for use on Windows; Macintosh has PHP built in, and Linux users can install it from repository.
+The download includes a small PHP "engine" for use on Windows; Macintosh has PHP built in, and Linux users can install PHP from repository.
 <br />
 The PHP engine is just 3 files from the php-5.4.45-Win32-VC9-x86.zip file at windows.php.net/downloads/releases/archives .
 <br />
