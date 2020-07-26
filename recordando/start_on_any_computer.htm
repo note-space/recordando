@@ -13,47 +13,48 @@ TEXTAREA { font-family: Tahoma, sans-serif; font-size: 8pt; background-color: #E
 .hidden { display: none }
 </style>
 <script type='text/javascript' >
-function check_dir() { 
-var path1 = window.location.pathname;  
-var path2 = path1.replace("/start_on_any_computer.htm",""); 
+function check_dir() {
+var path0 = window.location.pathname;
+var path1 = path0.replace("%20"," ");
+var path2 = path1.replace("/start_on_any_computer.htm","");
 var path3 = path2.replace(/^\/+/, "") ;
 var win1 = '"' + path3 + "/windows_engine/php.exe" + '"' ;
 var win2 = " --server localhost:8040 --docroot " + '"' + path3 + '"' ;
 var win3 = " --define extension=" + '"' + path3 + "/windows_engine/php_pdo_sqlite.dll" + '"' ;
-document.getElementById('command0').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
-document.getElementById('command1').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
-document.getElementById('command2').value = "/usr/local/php5/bin/php --server localhost:8040 --docroot " + '"' + path2 + '"' ; 
-document.getElementById('command3').value = win1 + win2 + win3 ; 
-if ( isIE() == 0 ) { document.getElementById('IEnote').className='hidden' ; } 
+document.getElementById('command0').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ;
+document.getElementById('command1').value = "php --server localhost:8040 --docroot " + '"' + path2 + '"' ;
+document.getElementById('command2').value = "/usr/local/php5/bin/php --server localhost:8040 --docroot " + '"' + path2 + '"' ;
+document.getElementById('command3').value = win1 + win2 + win3 ;
+if ( isIE() == 0 ) { document.getElementById('IEnote').className='hidden' ; }
 }
 function showLinux() {
-document.getElementById('note1').className='hidden' ; 
-document.getElementById('note2').className='hidden' ; 
-document.getElementById('note0').className='curOS' ; 
-document.getElementById('command0').className='curIn' ;	
+document.getElementById('note1').className='hidden' ;
+document.getElementById('note2').className='hidden' ;
+document.getElementById('note0').className='curOS' ;
+document.getElementById('command0').className='curIn' ;
 }
 function showMac() {
-document.getElementById('note0').className='hidden' ; 
-document.getElementById('note2').className='hidden' ; 
-document.getElementById('note1').className='curOS' ; 
-document.getElementById('command1').className='curIn' ; 
+document.getElementById('note0').className='hidden' ;
+document.getElementById('note2').className='hidden' ;
+document.getElementById('note1').className='curOS' ;
+document.getElementById('command1').className='curIn' ;
 document.getElementById('command2').className='curIn2' ;
 }
 function showWin() {
-document.getElementById('note0').className='hidden' ; 
-document.getElementById('note1').className='hidden' ; 
-document.getElementById('note2').className='curOS' ; 
+document.getElementById('note0').className='hidden' ;
+document.getElementById('note1').className='hidden' ;
+document.getElementById('note2').className='curOS' ;
 }
 function isIE() {
 ua = navigator.userAgent;
 var is_ie = 0 ;
 if ( ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1 ) { is_ie = 1 ; }
-return is_ie; 
+return is_ie;
 }
 window.onload = check_dir ;
 </script>
 </head><body>
-<span id='IEnote' class='curOS' >For Internet Explorer, please click the button to "Allow blocked content" (if it appears) .. 
+<span id='IEnote' class='curOS' >For Internet Explorer, please click the button to "Allow blocked content" (if it appears) ..
 this page just wants to detect what folder it's in</span><br>
 <div id='note0' >
 on Linux with installed PHP :<br>copy the command below
@@ -71,17 +72,17 @@ open Terminal by typing apple-space, then typing "terminal" &amp; pressing enter
 <br>paste the command &amp; press enter again<br>
 <input id='command1' size=80 >
 <br><br>
-for versions of OS X before 10.9, first install PHP 5.6 from php-osx.liip 
+for versions of OS X before 10.9, first install PHP 5.6 from php-osx.liip
 <a href='https://php-osx.liip.ch'>here</a> .. then use this command :<br>
 <input id='command2' size=100 >
 <br><br></div>
 <div id='note2' >on Windows, using the PHP engine downloaded from github/note-space/recordando :<br>
-copy the command below (to select all, click 3 times quickly)<br> 
+copy the command below (to select all, click 3 times quickly)<br>
 open the Command Prompt by typing window-R, and then typing "cmd" &amp; pressing enter<br>
 paste the command (use right-click, if needed) &amp; press enter again <br>
 <textarea id='command3' cols=120 rows=5 ></textarea><br><br>
 the PHP engine download depends on the runtime of Visual C++ 2012 (or later)<br>
-that's probably already on your computer. &nbsp; if not, you can download it from Microsoft 
+that's probably already on your computer. &nbsp; if not, you can download it from Microsoft
 <a href='https://www.microsoft.com/en-us/download/details.aspx?id=30679' >here</a><br>
 <br></div>
 <br>
@@ -89,7 +90,7 @@ after PHP starts in Terminal, click on the link below to open recordando in your
 <br>
 <div class='curOS' >&nbsp; &nbsp; <a href='http://localhost:8040/app/recordando.php' ><b>my recordando</b></a></div>
 <br><br>
-show instructions for &nbsp; <a href='javascript: void(0); showLinux();' >Linux</a> 
+show instructions for &nbsp; <a href='javascript: void(0); showLinux();' >Linux</a>
  &nbsp; <a href='javascript: void(0); showMac();' >Mac</a>
  &nbsp; <a href='javascript: void(0); showWin();' >Win</a>
 <br><br>
