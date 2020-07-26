@@ -21,16 +21,16 @@ After that, you click on the "my recordando" link to see the results of the .php
 <br />
 ![to start the program on any OS](./docs/screenshot3.png)
 <br />
-The notes are saved in a sqlite file on the local computer; nothing is on the internet .. though you could place the program in some sort of file-sharing system.
+You'll probably want to minimize the terminal window.<br />
+![running in the Terminal window](./docs/screenshot4.png)
 <br />
+The notes are saved in a sqlite file on the local computer; nothing is on the internet .. though you could place the program in some sort of file-sharing system.
 <br />
 The download includes a small PHP "engine" for use on Windows; Macintosh has PHP built in, and Linux users can install PHP from repository.
 <br />
 The PHP engine is just 3 files from the php-5.4.45-Win32-VC9-x86.zip file at windows.php.net/downloads/releases/archives .
 <br />
 (The 5.4 version was chosen because its Visual C runtime requirement is compatiable with older PCs).
-<br />
-![running in the Terminal window](./docs/screenshot4.png)
 <br />
 The program is also offers a daily journal entry screen.
 <br />
