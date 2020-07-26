@@ -18,11 +18,12 @@ There is a html page, "start_on_any_computer.htm", that displays a command for y
 That's an extra step that most people will consider to be too much effort .. but, it does mean that there is not a hidden process running.
 <br />
 <br />
-The notes are saved in a sqlite file on the local computer; nothing is on the internet .. though you could place the program in some sort of file-sharing system.
-<br />
-After that, you click on the link to open the .php file in the browser.
+After that, you click on the "my recordando" link to open the .php file in the browser.
 <br />
 ![to start the program on any OS](./docs/screenshot3.png)
+<br />
+The notes are saved in a sqlite file on the local computer; nothing is on the internet .. though you could place the program in some sort of file-sharing system.
+<br />
 <br />
 The download includes a small PHP "engine" for use on Windows; Macintosh has PHP built in, and Linux users can install it from repository.
 <br />
