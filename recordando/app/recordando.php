@@ -1,8 +1,8 @@
 <?php
 //  Project: recordando (https://github.com/note-space/recordando)
-//  Version: 2020-02-02
+//  Version: 2021-03-21
 //  Summary: a program to organize and edit a collection of notes, with a journal and an in-text calculator
-//  Copyright (C) 2020, Thomas J Hyde .. residing in Wilmington DE US (tomhyde2@gmail.com)
+//  Copyright (C) 2021, Thomas J Hyde .. residing in Wilmington DE US (tomhyde2@gmail.com)
 //  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 //  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -71,11 +71,11 @@ if ( $_POST['moves'] == 0 ):
  echo button('start_search','search') ."</div><br><br><br>" ;
  echo button('set_moves(1)','start move','js') ."<br><br><br>" ;
  echo button('journal_screen','open journal') ."<br><br><br>" ;
- echo "<br><br><br><br>" ;
  array_menu($grid_num) ;
+ echo button('make_backup','make backup') ."<br><br><br>" ;
  $js  = "document.getElementById(\"new_menu\").style.display = \"none\" ; " ;
  $js .= "document.getElementById(\"menu_button\").style.display = \"block\" ; " ;
- echo "<br><br>". button($js,'hide menu','js') ."<br><br><br>" ;
+ echo "<br>". button($js,'hide menu','js') ."<br><br><br>" ;
  echo "</div>" ;
 else:
  if ( $grid_num > 1 ):
@@ -95,7 +95,7 @@ function array_menu($grid_num) {
 $js  = "document.getElementById(\"portal_div\").style.display = \"block\"; " ;
 $js .= "document.getElementById(\"button_div\").style.display = \"none\"; " ;
 echo "<div id='button_div' >". button($js,'portal options','js') ."</div>\n" ;
-echo "<div id='portal_div' style='display: none; text-align: left; background-color: #EEEEEE' ><br>\n" ;
+echo "<div id='portal_div' style='display: none; text-align: left; background-color: #EEEEEE' >\n" ;
 $row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num ) ;
 echo "<br><input type='hidden' name='portal_id' value=". $grid_num ." >\n" ;
 echo my_word('portal title') .":<br><input type='text' name='this_text' size=16 value='". $row['this_text'] ."' ><br>" ;
@@ -108,7 +108,7 @@ else:
  $str  = "<br>this array has ". $count ." card" ;  if ( $count > 1 ): $str .= "s" ; endif;
  $str .= "<br>it cannot change back to a card<br><br>\n" ;
 endif;
-if ( $grid_num == 1 ): $str = "" ; endif;
+if ( $grid_num == 1 ): $str = "(displays as window title)<br><br>" ; endif;
 echo $str . my_word('columns') .": " ;
 $arr = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20) ;
 select_input('subgrid_cols',$arr,$grid_num) ;
@@ -119,10 +119,10 @@ echo "</div>" ;
 echo "<br><br>" ;
 if ( $grid_num == 1 ):
  echo button('options_list_screen','program options') ."<br><br>" ;
- echo "<div style='font-size: 8pt'>program v. 2020-02-02" ;
+ echo "<div style='font-size: 8pt'>program v. 2021-03-21" ;
  echo "<br>PHP v. ". phpversion() ."<br>.db file:<br>" ;
  echo str_replace('.php','.db',$_SERVER["SCRIPT_FILENAME"]) ;
- echo "<br><br>for support, email :<br>tomhyde2@gmail.com<br></div>" ;
+ echo "<br><br>for support, email :<br>tomhyde2@gmail.com<br><br></div>" ;
 endif;
 }
 
@@ -196,10 +196,11 @@ echo str_replace("\n", "<br>", $str) ."</div></div></td>\n" ;
 function my_word($word) { return $word ; }  // this could allow for other languages, later
 
 function page_header($ajax='') {
+$row = select_one_row("SELECT * FROM t_note WHERE this_id = 1") ;
 echo "<!DOCTYPE PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' >\n" ;
 echo "<html><head>\n<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >\n" ;
 echo "<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >\n" ;
-echo "<title>recordando</title>\n" ;
+echo "<title>". $row['this_text'] ."</title>\n" ;
 echo_css() ;
 echo_javascript($ajax) ;
 echo "</head><body><form action='". $_SERVER['PHP_SELF'] ."' method='POST' name='formA' onsubmit='return false' >\n" ;
@@ -1126,4 +1127,100 @@ endwhile;
 $arr = array() ;
 $arr[] = db_str($str) ;
 run_sql("UPDATE t_note SET this_text = ? WHERE this_id = ". intval($_POST['this_id']), $arr ) ;
+}
+
+function make_backup() {
+$str  = "<!DOCTYPE PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' ><html><head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >
+<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes' >
+<title>notes backup ". date('Y-m-d') ."</title>
+<style type='text/css'>
+BODY { font-family: monospace, sans-serif; font-size: 10pt; line-height: 12pt;  margin:0; background:#ebeef1 }
+.container { position: absolute; top: 10px; right: 50px; bottom: 60px; left: 20px }
+TEXTAREA { font-family: monospace, monospace; font-size: 14pt; color: PaleGoldenrod; background-color: DarkSlateGray; margin:0; padding:20px; overflow-y:auto; resize:none; width:100%; height:100%; min-height:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing: border-box; border:1px #ddd solid; outline:none }
+TABLE { font-family: monospace, sans-serif; font-size: 10pt; line-height: 12pt;  color: black; background-color: Thistle; margin: 0 auto; }
+.buttony { font-size: 8pt }
+.l1 { background: lightgray; border-style: solid ; border-width: 1px ; border-color: #999999; cursor: pointer }
+.l2 { overflow: hidden; width: 180px; height: 120px; }
+</style>
+<script type='text/javascript' >
+function openOne(lastOne,thisOne) { document.getElementById(lastOne).style.display = 'none' ; document.getElementById(thisOne).style.display = 'inline' ; }
+</script>
+</head><body>\n" ;
+$grids = ' 0' ;
+$result = select_sql("SELECT * FROM t_note_opt WHERE this_opt = 'has_subgrid' AND this_value = 1 ORDER BY note_id") ;
+while ( $row = $result->fetch() ):
+ $str .= one_grid_html($row['note_id']) ;
+ $grids .= ', '. $row['note_id']  ;
+endwhile;
+$result = select_sql("SELECT * FROM t_note WHERE this_id NOT IN (". $grids ." ) ORDER BY this_id") ;
+while ( $row = $result->fetch() ): $str .= one_cell_html($row) ; endwhile;
+$str .= calendar_html() ."</body></html>\n" ;
+$filename = dirname(__FILE__) . DIRECTORY_SEPARATOR .'notes_'. date('Y-m-d') .'.htm' ;
+file_put_contents($filename, $str) ;
+echo "<div style='font-family: monospace; font-size: 11pt' ><br><br>all records backed up to ". $filename ."</div>" ;
+}
+
+function one_grid_html($grid_num) {
+if ( $grid_num == 1 ): $style = 'inline' ; else: $style = 'none' ; endif;
+$row = select_one_row("SELECT * FROM t_note WHERE this_id = ". $grid_num) ;
+$str  = "<div id='a". $grid_num ."' style='display: ". $style ."' ><table style='margin-right:auto; margin-left:12px; margin-top:12px' >\n" ;
+$subgrid_cols = get_note_opt($grid_num,'subgrid_cols') ;
+if ( intval($subgrid_cols) < 1 ): $subgrid_cols = 3 ; endif;
+for ( $this_col=1; $this_col<=$subgrid_cols; $this_col++ ):
+ $str .= "<td valign='top' ><table>". one_col_html($grid_num,$this_col) ."</table></td>" ;
+endfor;
+$records = num_rows("t_note WHERE parent_grid = ". $grid_num) ;
+if ( $records < 1 ): $str .= "<td>this array is empty</td>" ; endif;
+$str .= "<td valign='top' >" ;
+if ( $grid_num == 1 ):
+ $str .= "(top)<br><br><input type='button' onclick='openOne(\"a1\",\"a0\")' value='calendar' >" ;
+else:
+ $str .= "<input type='button' onclick='openOne(\"a". $grid_num ."\",\"a". $row['parent_grid'] ."\")' value='up' >" ;
+endif;
+$str .= "</td></tr></table></div>\n" ;
+return $str ;
+}
+
+function one_col_html($grid_num,$this_col) {
+$str = '' ;
+$sqlA = "SELECT * FROM t_note WHERE parent_grid = ". $grid_num ." AND " ;
+$result = select_sql($sqlA ."card_status = 0 AND this_col = ". $this_col ." ORDER BY this_row") ;
+while ( $row = $result->fetch() ): $str .= note_cell_html($row,$grid_num) ; endwhile;
+$result = select_sql($sqlA ."card_status = 1 AND this_col = ". $this_col ." ORDER BY this_row") ;
+while ( $row = $result->fetch() ): $str .= note_cell_html($row,$grid_num) ; endwhile;
+return $str ;
+}
+
+function note_cell_html($row,$grid_num) {
+if ( get_note_opt($row['this_id'],'has_subgrid') == 1 ): $has_subgrid = 1 ; else: $has_subgrid = 0 ; endif;
+$str  = "<tr><td class='l1' " ;
+$color = get_note_opt($row['this_id'],'card_color') ;
+if ( $color != 'lightgray'  And strlen($color) > 2 ): $str .= "style='background: ". $color ."' " ; endif;
+$str .= "><div class='l2' onclick='openOne(\"a". $grid_num ."\",\"a". $row['this_id'] ."\")' >" ;
+if ( $has_subgrid ): $str .= "<span style='background-color: #FFFFFF' >&nbsp; <i>portal</i> &nbsp;</span><br>" ; endif;
+$strA = substr(strip_tags($row['this_text']),0,128) ;
+$str .= str_replace("\n", "<br>", $strA) ."</div></td></tr>\n" ;
+return $str ;
+}
+
+function one_cell_html($row) {
+if ( $row['calendar_date'] > '0000' ): $back = '0' ; else: $back = $row['parent_grid'] ; endif;
+$str  = "<div id='a". $row['this_id'] ."' style='display: none' ><div class='container' >\n" ;
+$str .= "<input type='button' onclick='openOne(\"a". $row['this_id'] ."\",\"a". $back ."\")' value='close card' >" ;
+if ( $row['calendar_date'] > '0000' ): $str .= "&nbsp; &nbsp; ". $row['calendar_date'] ; endif;
+$str .= "<br><textarea>". input_str($row['this_text']) ."</textarea></div></div>\n" ;
+return $str ;
+}
+
+function calendar_html() {
+$str  = "<div id='a0' style='display: none' >" ;
+$str .= "<input type='button' onclick='openOne(\"a0\",\"a1\")' value='back' ><br><br>\n" ;
+$result = select_sql("SELECT * FROM t_note WHERE calendar_date > '0000-00-00' ORDER BY calendar_date") ;
+while ( $row = $result->fetch() ):
+ $str .= "&nbsp; <span onclick='openOne(\"a0\",\"a". $row['this_id'] ."\")' style='cursor: pointer' >" ;
+ $str .= $row['calendar_date'] ." .. ". substr(strip_tags($row['this_text']),0,72) ."</span><br><br>\n" ;
+endwhile;
+$str .= "</div>\n" ;
+return $str ;
 }
