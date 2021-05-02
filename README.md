@@ -11,7 +11,7 @@ It does have one more feature .. a calculating function that works within a bloc
 <br />
 ![the text edit screen, with calculation](./docs/screenshot2.png)
 <br />
-It is designed to run as a desktop application installed locally on any Windows, Macintosh or Linux personal computer or laptop, but not on any smartphone or tablet type system.
+It is designed to run as a PHP desktop application installed locally on any Windows, Macintosh or Linux personal computer or laptop. To use it on an Android device or on a Chromebook, you could run PHP with the Termux app.  On an iPhone or iPad, you could run PHP with the PHPWin app (free with ads) or Draftcode (a very small purchase).
 <br />
 There is a html page, "start_on_any_computer.htm", that displays the text of a command for you to copy & paste into a terminal window that you open for yourself.
 <br />
