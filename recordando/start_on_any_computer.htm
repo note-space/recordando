@@ -27,15 +27,19 @@ document.getElementById('command2').value = "/usr/local/php5/bin/php --server lo
 document.getElementById('command3').value = win1 + win2 + win3 ;
 if ( isIE() == 0 ) { document.getElementById('IEnote').className='hidden' ; }
 }
-function showLinux() {
+function showLin() {
 document.getElementById('note1').className='hidden' ;
 document.getElementById('note2').className='hidden' ;
+document.getElementById('note3').className='hidden' ;
+document.getElementById('note4').className='hidden' ;
 document.getElementById('note0').className='curOS' ;
 document.getElementById('command0').className='curIn' ;
 }
 function showMac() {
 document.getElementById('note0').className='hidden' ;
 document.getElementById('note2').className='hidden' ;
+document.getElementById('note3').className='hidden' ;
+document.getElementById('note4').className='hidden' ;
 document.getElementById('note1').className='curOS' ;
 document.getElementById('command1').className='curIn' ;
 document.getElementById('command2').className='curIn2' ;
@@ -43,7 +47,25 @@ document.getElementById('command2').className='curIn2' ;
 function showWin() {
 document.getElementById('note0').className='hidden' ;
 document.getElementById('note1').className='hidden' ;
+document.getElementById('note3').className='hidden' ;
+document.getElementById('note4').className='hidden' ;
 document.getElementById('note2').className='curOS' ;
+}
+function showAnd() {
+document.getElementById('note0').className='hidden' ;
+document.getElementById('note1').className='hidden' ;
+document.getElementById('note2').className='hidden' ;
+document.getElementById('note4').className='hidden' ;
+document.getElementById('note3').className='curOS' ;
+}
+function showIos() {
+document.getElementById('note0').className='hidden' ;
+document.getElementById('note1').className='hidden' ;
+document.getElementById('note2').className='hidden' ;
+document.getElementById('note3').className='hidden' ;
+document.getElementById('note4').className='curOS' ;
+document.getElementById('link_span1').className='hidden' ;
+document.getElementById('link_span2').className='hidden' ;
 }
 function isIE() {
 ua = navigator.userAgent;
@@ -62,8 +84,8 @@ on Linux with installed PHP :<br>copy the command below
 <input id='command0' size=80 ><br><br>
 first, you'll need to have PHP installed<br>
 if you haven't already installed LAMP, this will give you what is needed to get just PHP & SQLite:<br>
-on an older distro (before PHP 7): &nbsp; <code>sudo apt-get install php5 php5-sqlite</code><br>
-on a new distro: &nbsp; <code>sudo apt-get install php php-sqlite3</code>
+on a new distro: &nbsp; <code>sudo apt-get install php php-sqlite3</code><br>
+on an older distro (before PHP 7): &nbsp; <code>sudo apt-get install php5 php5-sqlite</code>
 <br><br></div>
 <div id='note1' >
 on Macintosh 10.9 and later (a PHP built-in server is already installed) :<br>
@@ -85,14 +107,25 @@ the PHP engine download depends on the runtime of Visual C++ 2012 (or later)<br>
 that's probably already on your computer. &nbsp; if not, you can download it from Microsoft
 <a href='https://www.microsoft.com/en-us/download/details.aspx?id=30679' >here</a><br>
 <br></div>
+<div id='note3' >
+copy this program's folder to the storage folder on the Android device<br>
+install the free app Termux, install PHP in Termux, and give Termux permissions to the storage folder<br>
+then, enter this command in Termux:<br>
+<input value='php --server localhost:8040 --docroot /storage/emulated/0/recordando' size=80 ><br><br>
+</div>
+<div id='note4' >
+for iOS on iPhone or iPad, install the phpwin app or the DraftCode app, and run this program inside that.<br><br>
+</div>
 <br>
-after PHP starts in Terminal, click on the link below to open recordando in your browser:
+<span id='link_span1' >after PHP starts in Terminal, click on the link below to open recordando in your browser:</span>
 <br>
-<div class='curOS' >&nbsp; &nbsp; <a href='http://localhost:8040/app/recordando.php' ><b>my recordando</b></a></div>
+<div class='curOS' id='link_span2' >&nbsp; &nbsp; <a href='http://localhost:8040/app/recordando.php' ><b>my recordando</b></a></div>
 <br><br>
-show instructions for &nbsp; <a href='javascript: void(0); showLinux();' >Linux</a>
+show instructions for &nbsp; <a href='javascript: void(0); showLin();' >Linux</a>
  &nbsp; <a href='javascript: void(0); showMac();' >Mac</a>
  &nbsp; <a href='javascript: void(0); showWin();' >Win</a>
+ &nbsp; <a href='javascript: void(0); showIos();' >iOS</a>
+ &nbsp; <a href='javascript: void(0); showAnd();' >Android</a> (and Chromebook)
 <br><br>
 for support, send an email message to <input type='text' size=20 value='tomhyde2@gmail.com' >
 <br><br>
@@ -102,11 +135,17 @@ If you see the message "fatal error: uncaught exception 'PDOException' ", then t
 <br><br>
 <script type='text/javascript' >
 var OSName = "Unknown";
-if (window.navigator.userAgent.indexOf("Windows")!= -1) { OSName="Win"; }
-if (window.navigator.userAgent.indexOf("Mac")    != -1) { OSName="Mac"; }
-if (window.navigator.userAgent.indexOf("Linux")  != -1) { OSName="Lin"; }
-if (OSName=="Lin") { showLinux() ; }
+if (window.navigator.userAgent.indexOf("Windows") != -1) { OSName="Win"; }
+if (window.navigator.userAgent.indexOf("Mac") != -1) { OSName="Mac"; }
+if (window.navigator.userAgent.indexOf("Linux") != -1) { OSName="Lin"; }
+if (window.navigator.userAgent.indexOf("Android") != -1) { OSName="And"; }
+if (window.navigator.userAgent.indexOf("CrOS") != -1) { OSName="And"; }
+if (window.navigator.userAgent.indexOf("iPhone") != -1) { OSName="Ios"; }
+if (window.navigator.userAgent.indexOf("iPad") != -1) { OSName="Ios"; }
+if (OSName=="Lin") { showLin() ; }
 if (OSName=="Mac") { showMac() ; }
 if (OSName=="Win") { showWin() ; }
+if (OSName=="And") { showAnd() ; }
+if (OSName=="Ios") { showIos() ; }
 </script>
 </body></html>
